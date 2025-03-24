@@ -31,6 +31,21 @@ class _SignupPageState extends State<SignupPage> {
     return null;
   }
 
+  void _handleSubmit() {
+    if (_formKey.currentState?.saveAndValidate() ?? false) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ConfirmationPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Validation failed. Please check your input.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,17 +83,34 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.saveAndValidate() ?? false) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
-                  }
-                },
+                onPressed: _handleSubmit,
                 child: const Text('Submit'),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConfirmationPage extends StatelessWidget {
+  const ConfirmationPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Confirmation')),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Signup Successful!', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Back'),
+            ),
+          ],
         ),
       ),
     );
