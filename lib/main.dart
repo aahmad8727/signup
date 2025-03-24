@@ -21,13 +21,20 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormBuilderState>();
 
+  // Custom password complexity validator
   String? passwordComplexity(String? value) {
-    if (value == null || value.isEmpty) return 'Password is required';
-    if (value.length < 6) return 'Password must be at least 6 characters';
-    if (!RegExp(r'(?=.*?[A-Z])').hasMatch(value))
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    if (!RegExp(r'(?=.*?[A-Z])').hasMatch(value)) {
       return 'Include at least one uppercase letter';
-    if (!RegExp(r'(?=.*?[0-9])').hasMatch(value))
+    }
+    if (!RegExp(r'(?=.*?[0-9])').hasMatch(value)) {
       return 'Include at least one number';
+    }
     return null;
   }
 
@@ -59,21 +66,29 @@ class _SignupPageState extends State<SignupPage> {
               FormBuilderTextField(
                 name: 'name',
                 decoration: const InputDecoration(labelText: 'Name'),
-                validator: FormBuilderValidators.required(context),
+                validator: FormBuilderValidators.required(
+                  errorText: 'Name is required',
+                ),
               ),
               FormBuilderTextField(
                 name: 'email',
                 decoration: const InputDecoration(labelText: 'Email'),
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(context),
-                  FormBuilderValidators.email(context),
+                  FormBuilderValidators.required(
+                    errorText: 'Email is required',
+                  ),
+                  FormBuilderValidators.email(
+                    errorText: 'Invalid email address',
+                  ),
                 ]),
               ),
               FormBuilderDateTimePicker(
                 name: 'dob',
                 inputType: InputType.date,
                 decoration: const InputDecoration(labelText: 'Date of Birth'),
-                validator: FormBuilderValidators.required(context),
+                validator: FormBuilderValidators.required(
+                  errorText: 'Date of Birth is required',
+                ),
               ),
               FormBuilderTextField(
                 name: 'password',
